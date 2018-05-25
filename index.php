@@ -13,19 +13,27 @@
             };
             
             var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 4,
+                zoom: 18,
                 center: suegra
             });
             
             var marcadorSuegra = new google.maps.Marker({
                 position: suegra,
                 map: map,
-                draggable: true,
+                /*draggable: true,*/
                 animation: google.maps.Animation.DROP,
-                title: "Mi suegra"
+                title: "Mi suegra"/*,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 10, //tamaño
+                    strokeColor: '#f00', //color del borde
+                    strokeWeight: 5, //grosor del borde
+                    fillColor: '#00f', //color de relleno
+                    fillOpacity:1// opacidad del relleno
+                }*/
             });
             
-            marcadorSuegra.setIcon('images/home.png');
+          marcadorSuegra.setIcon('images/home.png');
 
 
             /* INFO WINDOW */
