@@ -6,40 +6,42 @@
         <title></title>
         <script>
         function initMap() {
-            if( navigator.geolocation ){
-                navigator.geolocation.getCurrentPosition(success, fail);
-            }else{
-                alert("Navegador no soporta geolocalización.");
-            }
-            
-            
-        }
-        
-        function success(position){
-            console.log(position.coords.longitude);
-            console.log(position.coords.latitude);
-            
-            var actual = {
-                lat: position.coords.longitude, 
-                lng: position.coords.latitude
+            // -34.182354, -70.762726
+            var suegra = {
+                lat: -34.182354, 
+                lng: -70.762726
             };
             
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 4,
-                center: actual
+                center: suegra
             });
             
-            var marker = new google.maps.Marker({
-                position: actual,
-                map: map
+            var marcadorSuegra = new google.maps.Marker({
+                position: suegra,
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                title: "Mi suegra"
             });
             
-            marker.setIcon('images/home.png');
+            marcadorSuegra.setIcon('images/home.png');
+
+
+            /* INFO WINDOW */
+            contenido = "<h1>Mi Suegra</h1>"+
+                      "Acá es donde mi <b>alimentan</b> :D";	 
+
+            var infowindow = new google.maps.InfoWindow({
+               content: contenido
+            });
+            
+            google.maps.event.addListener(marcadorSuegra, 'click', function(){
+		infowindow.open(map,marcadorSuegra);
+            });
+            /* INFO WINDOW */
         }
         
-        function fail(){
-            console.log("Fallo");
-        }
         </script>
       
         <script async defer
