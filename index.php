@@ -7,6 +7,8 @@
         <script src="js/jquery.min.js"></script>
         
         <script>
+            
+        /*Con esta función creo un lugar en la base de datos*/
         function addLugar(latitud, longitud, titulo, info){
             $.ajax({
                 type: 'POST',
@@ -20,6 +22,59 @@
             }).done(function (res) {
 //                $("#res").html(res);
             });
+        }
+        
+        /*Con esta función llamo a los lugares de la base de datos y los pongo en el 
+         * mapa con la función putMarker()*/
+        function cargarLugares(){
+            <?php 
+            require_once 'model/Data.php';
+            $d  = new Data();
+            
+            $lugares = $d->getLugares();
+            
+            foreach ($lugares as $lug) {
+                echo "var pos = {"
+                        . "lat : $lug->latitud,"
+                        . "lng : $lug->longitud"
+                        . "};";
+                
+                echo "var lugar = {"
+                        . "position : pos,"
+                        . "titulo : '$lug->titulo',"
+                        . "info : '$lug->info'"
+                        . "};";
+                
+                echo "putMarker(lugar);";
+                
+            }
+            ?>
+        }
+        
+        /*Esta función recibe un lugar JSON y lo coloca en el mapa
+         * se llama en un ciclo, que es rescatado desde la base de datos*/
+        function putMarker(lugar) {
+            
+            var marker = new google.maps.Marker({
+                position: lugar.position,
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                title: lugar.titulo
+            });
+
+
+            /*INFO WINDOW*/
+            var infowindow = new google.maps.InfoWindow({
+                content: "<h2>Información adicional</h2>"+lugar.info
+            });
+
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.open(map, marker);
+            });
+            /*INFO WINDOW*/
+
+            markers.push(marker);
         }
         
         </script>
@@ -106,30 +161,24 @@
 
             function initMap() {
                 // -34.182354, -70.762726
-                var suegra = {
+                var lugar = {
                     lat: -34.1824,
                     lng: -70.762726
                 };
 
                 map = new google.maps.Map(document.getElementById('map'), {
                     zoom: 16,
-                    center: suegra
+                    center: lugar
                 });
                 
                 
-
                 /*Listener para añadir un marker con un click en el mapa*/
                 map.addListener('click', function (event) {
                     addMarker(event.latLng);
                 });
                 /*Listener para añadir un marker con un click en el mapa*/
-
-
-
-                //contenido = "<h1>Mi Suegra</h1>" +
-                        //"Acá es donde mi <b>alimentan</b> :D";
-
-                //addMarker(suegra, contenido);
+                
+                cargarLugares();
             }
 
         </script>

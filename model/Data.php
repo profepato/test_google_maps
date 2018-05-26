@@ -14,4 +14,20 @@ class Data{
         $this->con->desconectar();
     }
     
+    public function getLugares(){
+        $this->con->conectar();
+        
+        $lugares = array();
+        
+        $rs = $this->con->ejecutar("SELECT * FROM lugar");
+        
+        while($obj = $rs->fetch_object()){
+            array_push($lugares, $obj);
+        }
+        
+        $this->con->desconectar();
+        
+        return $lugares;
+    }
+    
 }
