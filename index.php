@@ -4,6 +4,26 @@
     <head>
         <meta charset="UTF-8">
         <title></title>
+        <script src="js/jquery.min.js"></script>
+        
+        <script>
+        function addLugar(latitud, longitud, titulo, info){
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost/test_google_maps/controller/addLugarController.php',
+                data: {
+                    lat : latitud,
+                    lon : longitud,
+                    tit : titulo,
+                    inf : info
+                }
+            }).done(function (res) {
+//                $("#res").html(res);
+            });
+        }
+        
+        </script>
+        
         <script>
             /* PRUEBA PARA SEGUIR UN OBJETO EN EL MAPA*/
 //            function sleep(ms) {
@@ -31,21 +51,31 @@
             var map;
 
             /*Función para agregar un marcador al mapa*/
-            function addMarker(location, contenidoInfoWindow) {
+            function addMarker(location) {
+                var titulo = prompt("Título: ");
+                var info = prompt("Info adicional:");
+                
                 var marker = new google.maps.Marker({
                     position: location,
                     map: map,
                     draggable: true,
                     animation: google.maps.Animation.DROP,
-                    title: "Mi marcador " + markers.length,
-                    icon: 'images/home.png'
+                    title: titulo
                 });
+                
+                
+                
+                
+                /*Acá añado la ubicación a la base de datos*/
+                addLugar(location.lat(),location.lng(), titulo, info);
+                /*Acá añado la ubicación a la base de datos*/
+                
                 
                 
                 
                 /*INFO WINDOW*/
                 var infowindow = new google.maps.InfoWindow({
-                    content: contenidoInfoWindow
+                    content: "<h2>Información adicional</h2>"+info
                 });
 
                 google.maps.event.addListener(marker, 'click', function () {
@@ -82,7 +112,7 @@
                 };
 
                 map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 18,
+                    zoom: 16,
                     center: suegra
                 });
                 
@@ -90,16 +120,16 @@
 
                 /*Listener para añadir un marker con un click en el mapa*/
                 map.addListener('click', function (event) {
-                    addMarker(event.latLng, "Acá poner contenido ["+markers.length+"]");
+                    addMarker(event.latLng);
                 });
                 /*Listener para añadir un marker con un click en el mapa*/
 
 
 
-                contenido = "<h1>Mi Suegra</h1>" +
-                        "Acá es donde mi <b>alimentan</b> :D";
+                //contenido = "<h1>Mi Suegra</h1>" +
+                        //"Acá es donde mi <b>alimentan</b> :D";
 
-                addMarker(suegra, contenido);
+                //addMarker(suegra, contenido);
             }
 
         </script>
@@ -110,12 +140,13 @@
 
         <style>
             #map {
-                height: 400px;
+                height: 600px;
                 width: 100%;
             }
         </style>
     </head>
     <body>
         <div id="map"></div>
+        <div id="res"></div>
     </body>
 </html>
