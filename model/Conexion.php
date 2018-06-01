@@ -5,7 +5,7 @@ class Conexion{
         $this->mysql = new mysqli(
             "localhost",
             "root",
-            "123456",
+            "",
             "bd_lugares"
         );
         if (mysqli_connect_errno()) {

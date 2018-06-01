@@ -6,6 +6,8 @@
         <title></title>
         <script src="js/jquery.min.js"></script>
         
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&v=3&libraries=geometry"></script>
+        
         <script>
             
         /*Con esta función creo un lugar en la base de datos*/
@@ -197,5 +199,10 @@
     <body>
         <div id="map"></div>
         <div id="res"></div>
+        
+       <!-- 
+       https://maps.googleapis.com/maps/api/distancematrix/json?origins=-34.1778,-70.7653&destinations=-34.18,-70.7574&key=AIzaSyDfoOjQyKt_nlYBaDusHQjE8v-ijmr62Fc&mode=walkin
+       https://developers.google.com/maps/documentation/distance-matrix/intro?hl=es-419
+       -->
     </body>
 </html>
